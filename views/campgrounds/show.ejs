@@ -5,6 +5,11 @@
     <h2>
         In: <%=campground.location%>
     </h2>
+    <img src="<%= campground.image %>" alt="">
+    <p>
+        <%= campground.description %>
+    </p>
+    <h3>$<%= campground.price%> per night.</h3>
     <footer>
         <p>
             <a href="/campgrounds/<%=campground._id%>/edit">Edit this campground</a>
