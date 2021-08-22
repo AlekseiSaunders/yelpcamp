@@ -9,6 +9,7 @@ const campground = require('./models/campground');
 const ejsMate = require('ejs-mate');
 const catchAsync = require('./utilities/catchAsync');
 const ExpressError = require('./utilities/ExpressError');
+const { error } = require('console');
 
 mongoose.connect('mongodb://localhost:27017/yelp-camp', {
   useNewUrlParser: true,
@@ -98,12 +99,13 @@ app.all('*', (req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
-  const { statusCode = 500, message = 'Something went wrong' } = err;
+  const { statusCode = 500 } = err;
+  if (!err.message) err.message = 'Unidentified Error';
   res.status(statusCode);
   if (statusCode === 404) {
-    res.status(404).render('notfound');
+    res.status(404).render('notfound', { err, statusCode });
   } else {
-    res.render('error');
+    res.render('error', { err, statusCode });
   }
 });
 
