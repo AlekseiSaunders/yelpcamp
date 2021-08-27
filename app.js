@@ -10,6 +10,7 @@ const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
 const catchAsync = require('./utilities/catchAsync');
 const ExpressError = require('./utilities/ExpressError');
+const reviewSchema = require('./validationSchemas/reviewSchema.js');
 const campgroundSchema = require('./validationSchemas/campgroundSchema.js');
 const { error } = require('console');
 
@@ -35,6 +36,16 @@ app.use(morgan('dev'));
 
 const validateCampground = (req, res, next) => {
   const { error } = campgroundSchema.validate(req.body);
+  if (error) {
+    const msg = error.details.map((el) => el.message).join(',');
+    throw new ExpressError(msg, 400);
+  } else {
+    next();
+  }
+};
+
+const validateReview = (req, res, next) => {
+  const { error } = reviewSchema.validate(req.body);
   if (error) {
     const msg = error.details.map((el) => el.message).join(',');
     throw new ExpressError(msg, 400);
@@ -74,7 +85,9 @@ app.post(
 app.get(
   '/campgrounds/:id',
   catchAsync(async (req, res, next) => {
-    const campground = await Campground.findById(req.params.id);
+    const campground = await Campground.findById(
+      req.params.id
+    ).populate('reviews');
     res.render('campgrounds/show', { campground });
   })
 );
@@ -110,6 +123,7 @@ app.delete(
 
 app.post(
   '/campgrounds/:id/reviews',
+  validateReview,
   catchAsync(async (req, res, next) => {
     const campground = await Campground.findById(req.params.id);
     const review = new Review(req.body.review);
@@ -119,6 +133,9 @@ app.post(
     res.redirect(`/campgrounds/${campground._id}`);
   })
 );
+
+app.delete
+
 
 app.all('*', (req, res, next) => {
   next(new ExpressError('Page Not Found', 404));
