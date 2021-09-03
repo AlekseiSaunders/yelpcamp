@@ -4,7 +4,7 @@ const path = require('path');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 const methodOverride = require('method-override');
-// const campground = require('./models/campground');
+const session = require('express-session');
 const ejsMate = require('ejs-mate');
 const ExpressError = require('./utilities/ExpressError');
 const { error } = require('console');
@@ -16,7 +16,7 @@ mongoose.connect('mongodb://localhost:27017/yelp-camp', {
   useNewUrlParser: true,
   useCreateIndex: true,
   useUnifiedTopology: true,
-  useFindAndModify: false
+  useFindAndModify: false,
 });
 
 const db = mongoose.connection;
@@ -33,6 +33,13 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
+
+const sessionConfig = {
+  secret: 'thischangesinproduction',
+  resave: false,
+  saveUninitialized: true,
+};
+app.use(session(sessionConfig));
 
 app.use('/campgrounds', campgrounds);
 app.use('/campgrounds/:id/reviews', reviews);
