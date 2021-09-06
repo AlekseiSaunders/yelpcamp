@@ -9,8 +9,9 @@ const ejsMate = require('ejs-mate');
 const flash = require('connect-flash');
 const ExpressError = require('./utilities/ExpressError');
 const { error } = require('console');
-
-
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
+const User = require('./models/user');
 
 const campgrounds = require('./routes/campgrounds');
 const reviews = require('./routes/reviews');
@@ -21,6 +22,17 @@ mongoose.connect('mongodb://localhost:27017/yelp-camp', {
   useUnifiedTopology: true,
   useFindAndModify: false,
 });
+
+const sessionConfig = {
+  secret: 'thischangesinproduction',
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    httpOnly: true,
+    expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+    maxAge: 1000 * 60 * 60 * 24 * 7,
+  },
+};
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -37,18 +49,17 @@ app.use(methodOverride('_method'));
 app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
 
-const sessionConfig = {
-  secret: 'thischangesinproduction',
-  resave: false,
-  saveUninitialized: true,
-  cookie: {
-    httpOnly: true,
-    expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
-    maxAge: 1000 * 60 * 60 * 24 * 7,
-  },
-};
 app.use(session(sessionConfig));
 app.use(flash());
+
+app.use(passport.initialize);
+app.use(passport.session); // make sure that this is used after session is used in app
+passport.use(new LocalStrategy(User.authenticate()));
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+
 
 app.use((req, res, next) => {
   res.locals.success = req.flash('success');
