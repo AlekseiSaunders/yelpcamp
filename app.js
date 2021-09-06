@@ -10,6 +10,8 @@ const flash = require('connect-flash');
 const ExpressError = require('./utilities/ExpressError');
 const { error } = require('console');
 
+
+
 const campgrounds = require('./routes/campgrounds');
 const reviews = require('./routes/reviews');
 
