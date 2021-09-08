@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const catchAsync = require('../utilities/catchAsync');
 const User = require('../models/user');
+const passport = require('passport');
 
 router.get('/register', (req, res, next) => {
   res.render('users/register');
@@ -21,6 +22,25 @@ router.post(
       res.redirect('register');
     }
   })
+);
+
+router.get('/login', (req, res, next) => {
+  res.render('users/login');
+});
+
+router.post(
+  '/login',
+  passport.authenticate('local', {
+    failureFlash: true,
+    failureRedirect: '/login',
+  }),
+  (req, res, next) => {
+    req.flash(
+      'success',
+      'You have successfully logged in. Welcome back to Yelp Camp!'
+    );
+    res.redirect('/campgrounds');
+  }
 );
 
 module.exports = router;
