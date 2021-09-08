@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router({ mergeParams: true });
 const reviewSchema = require('../validationSchemas/reviewSchema.js');
 const ExpressError = require('../utilities/ExpressError');
+const isLoggedIn = require('../utilities/middleware');
 const Campground = require('../models/campground');
 const Review = require('../models/review');
 const catchAsync = require('../utilities/catchAsync');
