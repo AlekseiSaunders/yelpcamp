@@ -3,6 +3,7 @@ const router = express.Router();
 const catchAsync = require('../utilities/catchAsync');
 const User = require('../models/user');
 const passport = require('passport');
+const isLoggedIn = require('../utilities/middleware');
 
 router.get('/register', (req, res, next) => {
   res.render('users/register');
@@ -42,5 +43,11 @@ router.post(
     res.redirect('/campgrounds');
   }
 );
+
+router.get('/logout', (req, res, next) => {
+  req.logout();
+  req.flash('success', 'You have logged out successfully.');
+  res.redirect('/campgrounds');
+});
 
 module.exports = router;
