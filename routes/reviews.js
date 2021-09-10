@@ -5,7 +5,7 @@ const ExpressError = require('../utilities/ExpressError');
 const {
   isLoggedIn,
   validateReview,
-  isAuthor,
+  isReviewAuthor,
 } = require('../utilities/middleware');
 const Campground = require('../models/campground');
 const Review = require('../models/review');
@@ -30,6 +30,7 @@ router.post(
 router.delete(
   '/:reviewId',
   isLoggedIn,
+  isReviewAuthor,
   catchAsync(async (req, res, next) => {
     const { id, reviewId } = req.params;
     await Campground.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });

@@ -3,6 +3,7 @@ const ExpressError = require('./ExpressError');
 const campgroundSchema = require('../validationSchemas/campgroundSchema.js');
 const reviewSchema = require('../validationSchemas/reviewSchema.js');
 const Campground = require('../models/campground');
+const Review = require('../models/review');
 
 const isLoggedIn = (req, res, next) => {
   if (!req.isAuthenticated()) {
@@ -36,6 +37,19 @@ const isAuthor = async (req, res, next) => {
   next();
 };
 
+const isReviewAuthor = async (req, res, next) => {
+  const { id, reviewId } = req.params;
+  const review = await Review.findById(reviewId);
+  if (!review.author.equals(req.user._id)) {
+    req.flash(
+      'error',
+      'Sorry, you need to be the author to perform that action'
+    );
+    return res.redirect(`/campgrounds/${id}`);
+  }
+  next();
+};
+
 const validateReview = (req, res, next) => {
   const { error } = reviewSchema.validate(req.body);
   if (error) {
@@ -46,4 +60,10 @@ const validateReview = (req, res, next) => {
   }
 };
 
-module.exports = { isLoggedIn, validateCampground, isAuthor, validateReview };
+module.exports = {
+  isLoggedIn,
+  validateCampground,
+  isAuthor,
+  validateReview,
+  isReviewAuthor,
+};
