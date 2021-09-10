@@ -44,7 +44,9 @@ router.post(
       'success',
       'You have successfully logged in. Welcome back to Yelp Camp!'
     );
-    res.redirect('/campgrounds');
+    const redirectUrl = req.session.returnTo || '/campgrounds';
+    delete req.session.returnTo;
+    res.redirect(redirectUrl);
   }
 );
 
