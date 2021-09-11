@@ -9,7 +9,8 @@ const {
 const Campground = require('../models/campground');
 const campgrounds = require('../controllers/campgrounds');
 const multer = require('multer');
-const upload = multer({ dest: 'uploads/' });
+const { storage } = require('../cloudinary');
+const upload = multer({ storage });
 
 router
   .route('/')
@@ -19,7 +20,8 @@ router
   //   validateCampground,
   //   catchAsync(campgrounds.createCampground)
   .post(upload.array('image'), (req, res, next) => {
-    console.log(req.body, req.file);
+    console.log(req.body, req.files);
+    res.send('it Worked');
   });
 
 router.route('/new').get(isLoggedIn, campgrounds.renderNewForm);
