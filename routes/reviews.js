@@ -11,7 +11,8 @@ const Campground = require('../models/campground');
 const Review = require('../models/review');
 const catchAsync = require('../utilities/catchAsync');
 const reviews = require('../controllers/reviews');
-router.post('/', validateReview, isLoggedIn, catchAsync(reviews.newReview));
+
+router.post('/', validateReview, isLoggedIn, catchAsync(reviews.createReview));
 
 router.delete(
   '/:reviewId',
