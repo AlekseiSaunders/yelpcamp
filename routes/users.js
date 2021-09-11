@@ -6,23 +6,39 @@ const passport = require('passport');
 const isLoggedIn = require('../utilities/middleware');
 const users = require('../controllers/users');
 
-router.get('/register', users.renderRegister);
+router
+  .route('/register')
+  .get(users.renderRegister)
+  .post(catchAsync(users.registerUser));
 
-router.post(
-  '/register',
-  catchAsync(users.registerUser)
-);
+router
+  .route('/login')
+  .get(users.renderLogin)
+  .post(
+    passport.authenticate('local', {
+      failureFlash: true,
+      failureRedirect: '/login',
+    }),
+    users.loginUser
+  );
 
-router.get('/login', users.renderLogin);
+// router.get('/register', users.renderRegister);
 
-router.post(
-  '/login',
-  passport.authenticate('local', {
-    failureFlash: true,
-    failureRedirect: '/login',
-  }),
-  users.loginUser
-);
+// router.post(
+//   '/register',
+//   catchAsync(users.registerUser)
+// );
+
+// router.get('/login', users.renderLogin);
+
+// router.post(
+//   '/login',
+//   passport.authenticate('local', {
+//     failureFlash: true,
+//     failureRedirect: '/login',
+//   }),
+//   users.loginUser
+// );
 
 router.get('/logout', users.logoutUser);
 
