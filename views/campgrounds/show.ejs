@@ -4,40 +4,44 @@
     <div class="row">
         <div class="col-6">
             <div class="card mb-3">
-                <img class="card-img-top" src="<%= campground.image %>" alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title">
-                        <%=campground.title %>
-                    </h5>
-                    <p class="card-text">
-                        <%= campground.description %>
-                    </p>
-                </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item text-muted">In: <%=campground.location%>
-                    </li>
-                    <li class="list-group-item">$<%= campground.price%> per night.</li>
-                    <li class="list-group-item">Campground submitted by: <%= campground.author.username%>
-                    </li>
-                </ul>
-                <% if(currentUser && campground.author.equals(currentUser._id)) {%>
-                    <div class="card-body">
-                        <a class="card-link btn btn-warning" href="/campgrounds/<%=campground._id%>/edit">Edit this
-                            campground</a>
-                        <div class="mt-3">
-                            <form class="d-inline" action="/campgrounds/<%=campground.id%>?_method=DELETE"
-                                method="POST">
-                                <button class="btn btn-danger">Delete this Campground</button>
-                            </form>
-                        </div>
-                    </div>
-                    <%}%>
+                <% for(let image of campground.images) {%>
+                    <img class="card-img-top" src="<%= image.url %>" alt="card image Cap">
+                    <% } %>
                         <div class="card-body">
-                            <a class="card-link btn btn-primary" href="/campgrounds">Return to Campground list</a>
+                            <h5 class="card-title">
+                                <%=campground.title %>
+                            </h5>
+                            <p class="card-text">
+                                <%= campground.description %>
+                            </p>
                         </div>
-                        <div class="card-footer text-muted">
-                            2 days ago
-                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item text-muted">In: <%=campground.location%>
+                            </li>
+                            <li class="list-group-item">$<%= campground.price%> per night.</li>
+                            <li class="list-group-item">Campground submitted by: <%= campground.author.username%>
+                            </li>
+                        </ul>
+                        <% if(currentUser && campground.author.equals(currentUser._id)) {%>
+                            <div class="card-body">
+                                <a class="card-link btn btn-warning" href="/campgrounds/<%=campground._id%>/edit">Edit
+                                    this
+                                    campground</a>
+                                <div class="mt-3">
+                                    <form class="d-inline" action="/campgrounds/<%=campground.id%>?_method=DELETE"
+                                        method="POST">
+                                        <button class="btn btn-danger">Delete this Campground</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <%}%>
+                                <div class="card-body">
+                                    <a class="card-link btn btn-primary" href="/campgrounds">Return to Campground
+                                        list</a>
+                                </div>
+                                <div class="card-footer text-muted">
+                                    2 days ago
+                                </div>
             </div>
         </div>
         <div class="col-6">
