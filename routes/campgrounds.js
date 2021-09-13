@@ -20,7 +20,6 @@ router
     upload.array('image'),
     validateCampground,
     catchAsync(campgrounds.createCampground)
-
   );
 
 router.route('/new').get(isLoggedIn, campgrounds.renderNewForm);
