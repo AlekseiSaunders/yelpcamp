@@ -13,13 +13,9 @@
                     <input class="form-control" type="text" id="location" name="campground[location]" required>
                     <div class="valid-feedback">Looks Good!</div>
                 </div>
-                <input type="file" name="image" id="" multiple>
 
-                <!-- <div class="mb-3">
-                    <label class="form-label" for="image">Image Url</label>
-                    <input class="form-control" type="text" id="image" name="campground[image]" required>
-                    <div class="valid-feedback">Looks Good!</div>
-                </div> -->
+                <!-- <input type="file" name="image" id="image" multiple> -->
+
                 <div class="mb-3">
                     <label class="form-label" for="description">Description</label>
                     <textarea class="form-control" type="text" id="description"
@@ -33,6 +29,11 @@
                             aria-described="price-label" required>
                         <div class="valid-feedback">Looks Good!</div>
                     </div>
+                </div>
+                <div class="mb-3 custom-file">
+                    <label class="mb-2" for="">Image uploads</label>
+                    <input class="form-control" type="file" id="image" name="image" multiple>
+                    <label for="image" class="form-label custom-file-label"></label>
                 </div>
                 <div class="mb-3">
                     <button class="btn btn-success">Add Campground</button>
