@@ -72,6 +72,13 @@ module.exports.updateCampground = async (req, res, next) => {
     ...req.body.campground,
   });
   const imgs = req.files.map((f) => ({ url: f.path, filename: f.filename }));
+  geoData = await geoCoder
+    .forwardGeocode({
+      query: req.body.campground.location,
+      limit: 1,
+    })
+    .send();
+  campground.geometry = geoData.body.features[0].geometry;
   campground.images.push(...imgs);
   if (req.body.deleteImages) {
     for (let filename of req.body.deleteImages) {
