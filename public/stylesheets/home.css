@@ -1,7 +1,44 @@
 body {
   height: 100vh;
+  background-size: cover;
+  background-position: center;
+  background-image: linear-gradient(
+      hsla(240, 100%, 0%, 0.2),
+      hsla(240, 100%, 0%, 0.5)
+    ),
+    url('../images/patrick-hendry-euaPfbR6nC0-unsplash-crop.jpg');
+  text-shadow: 0 0.05rem 0.1rem hsla(240, 100%, 0%, 0.5);
+  box-shadow: inset 0 0 5rem hsla(240, 100%, 0%, 0.5);
 }
 
 .cover-container {
   max-width: 60vw;
+}
+
+.nav-link {
+  padding: 0.25rem 0;
+  font-weight: 700;
+  color: hsla(240, 100%, 100%, 0.7);
+  margin-left: 1.25rem;
+  border-bottom: 0.25rem solid transparent;
+}
+
+.nav-link:hover {
+  border-bottom-color: hsla(240, 100%, 100%, 0.5);
+  color: hsla(240, 100%, 100%, 1);
+}
+
+.btn-secondary {
+  color: hsla(240, 100%, 0%, 0.8);
+  text-shadow: none;
+}
+
+.btn-secondary:hover {
+  color: hsla(240, 100%, 0%, 0.5);
+  text-shadow: none;
+}
+
+.nav-link.active {
+  color: hsla(240, 100%, 100%, 1);
+  border-bottom-color: hsla(240, 100%, 100%, 1);
 }
