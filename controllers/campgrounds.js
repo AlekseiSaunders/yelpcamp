@@ -20,18 +20,17 @@ module.exports.createCampground = async (req, res, next) => {
       limit: 1,
     })
     .send();
-  console.log(geoData.body.features);
-  res.send(geoData.body.features);
-  // const campground = new Campground(req.body.campground);
-  // campground.images = req.files.map((f) => ({
-  //   url: f.path,
-  //   filename: f.filename,
-  // }));
-  // campground.author = req.user._id;
-  // await campground.save();
-  // console.log(campground);
-  // req.flash('success', 'Successfully made a new campground!');
-  // res.redirect(`/campgrounds/${campground._id}`);
+  const campground = new Campground(req.body.campground);
+  campground.geometry = geoData.body.features[0].geometry;
+  campground.images = req.files.map((f) => ({
+    url: f.path,
+    filename: f.filename,
+  }));
+  campground.author = req.user._id;
+  await campground.save();
+  console.log(campground);
+  req.flash('success', 'Successfully made a new campground!');
+  res.redirect(`/campgrounds/${campground._id}`);
 };
 
 module.exports.showCampground = async (req, res, next) => {
@@ -73,6 +72,13 @@ module.exports.updateCampground = async (req, res, next) => {
     ...req.body.campground,
   });
   const imgs = req.files.map((f) => ({ url: f.path, filename: f.filename }));
+  geoData = await geoCoder
+    .forwardGeocode({
+      query: req.body.campground.location,
+      limit: 1,
+    })
+    .send();
+  campground.geometry = geoData.body.features[0].geometry;
   campground.images.push(...imgs);
   if (req.body.deleteImages) {
     for (let filename of req.body.deleteImages) {
