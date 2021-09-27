@@ -6,7 +6,7 @@ const map = new mapboxgl.Map({
   center: campground.geometry.coordinates, // starting position [lng, lat]
   zoom: 10, // starting zoom
 });
-
+map.addControl(new mapboxgl.NavigationControl(), 'top-left');
 const popupOffset = { bottom: [10, -35] };
 
 new mapboxgl.Marker()
