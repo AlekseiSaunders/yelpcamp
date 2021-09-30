@@ -1,4 +1,4 @@
-if(process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }
 
@@ -16,7 +16,7 @@ const { error } = require('console');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('./models/user');
-
+const monogoSanitize = require('express-mongo-sanitize');
 const userRoutes = require('./routes/users');
 const campgroundRoutes = require('./routes/campgrounds');
 const reviewRoutes = require('./routes/reviews');
@@ -54,6 +54,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(monogoSanitize());
 
 app.use(session(sessionConfig));
 app.use(flash());
