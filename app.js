@@ -23,7 +23,7 @@ const reviewRoutes = require('./routes/reviews');
 const { any } = require('joi');
 const helmet = require('helmet');
 const dbUrl = 'mongodb://localhost:27017/yelp-camp';
-const MongoDBStore = require('connect-mongo')(session);
+const MongoDBStore = require('connect-mongo');
 // process.env.DB_URL; eventual link to atlas DB
 // 'mongodb://localhost:27017/yelp-camp'; used for local hosting
 mongoose.connect(dbUrl, {
@@ -33,10 +33,12 @@ mongoose.connect(dbUrl, {
   useFindAndModify: false,
 });
 
-const store = new MongoDBStore({
-  url: dbUrl,
-  secret: 'thischangesinproduction',
+const store = MongoDBStore.create({
+  mongoUrl: dbUrl,
   touchAfter: 24 * 60 * 60,
+  crypto: {
+    secret: 'thischangesinproduction',
+  },
 });
 
 store.on('err', function (e) {
