@@ -8,8 +8,13 @@
                 <p>
                     <%= err.message %>
                 </p>
-                <hr>
-                <p class="mb-0">Please click <a href="/campgrounds">here </a> to return home.</p>
+                <% if (process.env.NODE_ENV !=='production' ) {%>
+                    <p>
+                        <%= err.stack %>
+                    </p>
+                    <% } %>
+                        <hr>
+                        <p class="mb-0">Please click <a href="/campgrounds">here </a> to return home.</p>
             </div>
         </div>
     </div>
