@@ -22,10 +22,12 @@ const campgroundRoutes = require('./routes/campgrounds');
 const reviewRoutes = require('./routes/reviews');
 const { any } = require('joi');
 const helmet = require('helmet');
-const dbUrl = 'mongodb://localhost:27017/yelp-camp';
+const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/yelp-camp';
 const MongoDBStore = require('connect-mongo');
+const secret = process.env.SECRET || 'thischangesinproduction';
 // process.env.DB_URL; eventual link to atlas DB
 // 'mongodb://localhost:27017/yelp-camp'; used for local hosting
+
 mongoose.connect(dbUrl, {
   useNewUrlParser: true,
   useCreateIndex: true,
@@ -37,7 +39,7 @@ const store = MongoDBStore.create({
   mongoUrl: dbUrl,
   touchAfter: 24 * 60 * 60,
   crypto: {
-    secret: 'thischangesinproduction',
+    secret,
   },
 });
 
@@ -48,7 +50,7 @@ store.on('err', function (e) {
 const sessionConfig = {
   store: store,
   name: 'ycus',
-  secret: 'thischangesinproduction',
+  secret,
   resave: false,
   saveUninitialized: true,
   cookie: {
