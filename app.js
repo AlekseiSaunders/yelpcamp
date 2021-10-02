@@ -116,6 +116,7 @@ app.use(
       styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
       workerSrc: ["'self'", 'blob:'],
       objectSrc: [],
+      childSrc: ['blog:'],
       imgSrc: [
         "'self'",
         'blob:',
