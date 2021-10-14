@@ -12,6 +12,8 @@ const storage = new CloudinaryStorage({
   params: {
     folder: 'YelpCamp',
     allowedFormats: ['jpeg', 'jpg', 'png'],
+    moderation: 'aws_rek',
+    maxFileSize: 500000,
   },
 });
 
